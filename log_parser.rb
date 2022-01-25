@@ -4,6 +4,7 @@ class LogParser
 
   def initialize file
     @file = file.to_s
+    @log = {}
     parse_file
   end
 
@@ -20,8 +21,6 @@ class LogParser
   protected
 
   def parse_file
-
-    @log = {}
 
     File.open(@file).each do |line|
 
@@ -42,6 +41,11 @@ class LogParser
         @log[page] = { ips: [ip], visits: 1 }
       end
     end
+    sort_log
+  end
+
+  def sort_log
+    @log.sort_by { |_page, stats| stats[:visits] }.reverse!.to_h
   end
 
 end
